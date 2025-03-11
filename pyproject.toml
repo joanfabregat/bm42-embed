@@ -2,7 +2,7 @@
 name = "bm42-embed"
 version = "v0.1.0"
 url = "https://github.com/joanfabregat/bm42-embed"
-description = "An API to embed text using Jina"
+description = "An API to generate Qdrant's BM42 sparse embeddings"
 authors = [
     { name = "Joan Fabrégat", email = "jfabregat@fogandfrog.com" }
 ]
