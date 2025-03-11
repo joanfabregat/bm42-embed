@@ -49,7 +49,7 @@ COPY --from=builder /app/.venv .venv
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy only necessary application files
-COPY ../main/bm42_embedder.py .
+COPY main.py .
 
 # Ensure a non-root user
 RUN addgroup --system app && adduser --system --group --no-create-home app && \
