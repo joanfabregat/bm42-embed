@@ -1,5 +1,7 @@
 # Multilingual Embedding API
 
+[![Build and Push to GHCR and Docker Hub](https://github.com/joanfabregat/bm42-embed/actions/workflows/build.yaml/badge.svg)](https://github.com/joanfabregat/bm42-embed/actions/workflows/build.yaml)
+
 A FastAPI service for generating sparse text embeddings optimized for query relevance using the
 [`Qdrant/bm42-all-minilm-l6-v2-attentions`](https://qdrant.tech/articles/bm42/) model.
 
