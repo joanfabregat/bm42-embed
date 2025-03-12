@@ -6,12 +6,16 @@
 # The Software is provided "as is", without warranty of any kind.
 
 ARG PYTHON_VERSION=3.13
+ARG PORT=8000
+ARG EMBEDDING_MODEL
+ARG VERSION
+ARG BUILD_ID
+ARG COMMIT_SHA
 
 # --- Builder Stage ---
 FROM python:${PYTHON_VERSION}-slim AS builder
 
 WORKDIR /app
-
 
 # Install uv and its dependencies
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
@@ -21,18 +25,18 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy dependency specification and install production dependencies
 COPY uv.lock pyproject.toml ./
-RUN uv sync --frozen --no-default-groups
+RUN if [ "$COMPUTE_DEVICE" = "gpu" ]; then \
+      uv sync --group gpu --frozen --no-default-groups; \
+    else \
+      uv sync --frozen --no-default-groups; \
+    fi
 
 
 # --- Final Image ---
 FROM python:${PYTHON_VERSION}-slim
 WORKDIR /app
 
-ARG PORT=8000
-ARG EMBEDDING_MODEL
-ARG VERSION
-ARG BUILD_ID
-ARG COMMIT_SHA
+
 
 # Prevent Python from writing bytecode files
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -43,6 +47,7 @@ ENV EMBEDDING_MODEL=${EMBEDDING_MODEL}
 ENV VERSION=${VERSION}
 ENV BUILD_ID=${BUILD_ID}
 ENV COMMIT_SHA=${COMMIT_SHA}
+ENV COMPUTE_DEVICE=${COMPUTE_DEVICE}
 
 # Copy only the needed virtual environment from builder
 COPY --from=builder /app/.venv .venv

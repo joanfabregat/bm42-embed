@@ -28,10 +28,11 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 # Config
 ##
 MODEL_NAME = "Qdrant/bm42-all-minilm-l6-v2-attentions"
+COMPUTE_DEVICE = os.getenv("COMPUTE_DEVICE") or "cpu"
 VERSION = os.getenv("VERSION") or "unknown"
 BUILD_ID = os.getenv("BUILD_ID") or "unknown"
 COMMIT_SHA = os.getenv("COMMIT_SHA") or "unknown"
-PORT = int(os.getenv("PORT", "8000"))
+PORT = int(os.getenv("PORT") or "8000")
 
 
 ##
@@ -63,6 +64,7 @@ class EmbedResponse(BaseModel):
 
 class InfoResponse(BaseModel):
     model_name: str = MODEL_NAME
+    compute_device: str = COMPUTE_DEVICE
     version: str = VERSION
     build_id: str = BUILD_ID
     commit_sha: str = COMMIT_SHA
@@ -82,7 +84,10 @@ app = FastAPI(
 ##
 try:
     logger.info(f"Loading model {MODEL_NAME}...")
-    model = SparseTextEmbedding(model_name=MODEL_NAME)
+    model = SparseTextEmbedding(
+        model_name=MODEL_NAME,
+        providers=["CUDAExecutionProvider"] if COMPUTE_DEVICE == "gpu" else ["CPUExecutionProvider"]
+    )
     logger.info(f"Model {MODEL_NAME} loaded successfully")
 except Exception as e:
     raise RuntimeError(f"Failed to load model: {str(e)}")
