@@ -1,7 +1,7 @@
 [project]
 name = "bm42-embed"
 version = "v0.2.2"
-url = "https://github.com/joanfabregat/bm42-embed"
+urls = { "homepage" = "https://github.com/joanfabregat/bm42-embed" }
 description = "An API to generate Qdrant's BM42 sparse embeddings"
 authors = [
     { name = "Joan Fabrégat", email = "jfabregat@fogandfrog.com" }
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 
-[dependency-groups]
+[project.optional-dependencies]
 gpu = [
     "fastembed-gpu>=0.6.0",
 ]
