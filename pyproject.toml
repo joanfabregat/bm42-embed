@@ -1,6 +1,6 @@
 [project]
 name = "bm42-embed"
-version = "v0.1.0"
+version = "v0.2.0"
 url = "https://github.com/joanfabregat/bm42-embed"
 description = "An API to generate Qdrant's BM42 sparse embeddings"
 authors = [
